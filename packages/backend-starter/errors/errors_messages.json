@@ -1,0 +1,11 @@
+{
+  "user_pwd_min_length": "The password must be at least of 8 characters",
+  "user_pwd_max_length": "The maximum length of the password is 32 characters",
+  "user_username_min_length": "The username must be at least of 4 characters",
+  "user_username_max_length": "The maximum length of the username is 32 characters",
+  "user_exception_not_found": "Any user was found",
+  "profile_exception_not_found": "Any profile was found",
+  "post_exception_not_found": "Any post was found",
+  "category_exception_not_found": "Any category was found",
+  "tag_exception_not_found": "Any tag was found"
+}
