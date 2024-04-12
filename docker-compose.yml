@@ -1,0 +1,90 @@
+version: "3.8"
+services:
+
+  database:
+    image: postgres:latest
+    container_name: starter_postgresql
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=${BACKEND_POSTGRESQL_ROOT_PASSWORD}
+      - POSTGRES_DB=${BACKEND_POSTGRESQL_DB}
+      - POSTGRES_USER=${BACKEND_POSTGRESQL_USER}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - encora
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: starter-nestjs
+    container_name: starter_nestjs
+    restart: always
+    working_dir: /${BACKEND_WORKING_DIR}
+    volumes:
+      - ./packages/backend-starter:/${BACKEND_WORKING_DIR}
+      - /${BACKEND_WORKING_DIR}/node_modules
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    networks:
+      - encora
+    environment:
+      - START_TYPE
+      - NODE_ENV
+      - BACKEND_WORKING_DIR
+    build:
+      context: ./packages/backend-starter
+    depends_on:
+      - database
+    command: yarn run start:${START_TYPE}
+
+networks:
+  encora:
+  # admin:
+  # frontend:
+
+volumes:
+  pgdata:
+
+  # admin:
+  #   image: starter-vue-admin
+  #   container_name: starter_vue_admin
+  #   restart: always
+  #   working_dir: /${ADMIN_WORKING_DIR}
+  #   volumes:
+  #     - ./packages/admin:/${ADMIN_WORKING_DIR}
+  #     - /${ADMIN_WORKING_DIR}/node_modules
+  #   ports:
+  #     - "8080:8080"
+  #     - "9230:9229"
+  #   networks:
+  #     - admin
+  #   environment:
+  #     - START_TYPE
+  #     - NODE_ENV
+  #     - ADMIN_WORKING_DIR
+  #   build:
+  #     context: ./packages/admin
+  #   command: yarn run dev
+
+  # frontend:
+  #   image: starter-vue-frontend
+  #   container_name: starter_vue_frontend
+  #   restart: always
+  #   working_dir: /${FRONTEND_WORKING_DIR}
+  #   volumes:
+  #     - ./packages/frontend:/${FRONTEND_WORKING_DIR}
+  #     - /${FRONTEND_WORKING_DIR}/node_modules
+  #   ports:
+  #     - "9090:8080"
+  #     - "9231:9229"
+  #   networks:
+  #     - frontend
+  #   environment:
+  #     - START_TYPE
+  #     - NODE_ENV
+  #     - FRONTEND_WORKING_DIR
+  #   build:
+  #     context: ./packages/frontend
+  #   command: yarn run serve
