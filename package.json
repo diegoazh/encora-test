@@ -4,6 +4,11 @@
   "description": "Encora test",
   "packageManager": "pnpm@8.15.6",
   "scripts": {
+    "build": "pnpm run --recursive build",
+    "test": "pnpm run --recursive test:ci",
+    "test:e2e": "pnpm run --recursive test:e2e:ci",
+    "lint": "pnpm run --recursive lint",
+    "clean": "rimraf ./packages/**/node_modules && rimraf ./packages/**/package-lock.json && rimraf ./pnpm-lock.yaml && rimraf ./node_modules",
     "prepare": "husky install"
   },
   "devDependencies": {
